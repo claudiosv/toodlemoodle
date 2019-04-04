@@ -1,0 +1,13 @@
+name: toodlemoodle
+version: 0.1.0
+
+authors:
+  - Claudio Spiess <claudiosv@users.noreply.github.com>
+
+targets:
+  toodlemoodle:
+    main: src/toodlemoodle.cr
+
+crystal: 0.27.2
+
+license: MIT

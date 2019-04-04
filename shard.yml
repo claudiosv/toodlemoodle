@@ -3,6 +3,7 @@ version: 0.1.0
 
 authors:
   - Claudio Spiess <claudiosv@users.noreply.github.com>
+  - Riccardo Felluga <rfelluga@unibz.it>
 
 targets:
   toodlemoodle:

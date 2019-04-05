@@ -15,7 +15,7 @@ services:
       - MARIADB_PORT_NUMBER=3306
       - MOODLE_DATABASE_USER=bn_moodle
       - MOODLE_DATABASE_NAME=bitnami_moodle
-      - ALLOW_EMPTY_PASSWORD=yes
+      - ALLOW_EMPTY_PASSWORD=yes #Test12345678! test testuser@example.com
     ports:
       - '80:80'
       - '443:443'

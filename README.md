@@ -7,6 +7,7 @@ TODO: Write a description here
 TODO: Write installation instructions here
 
 ## Usage
+Google dork: This files describes API changes in core libraries and APIs inurl:lib/upgrade.txt
 
 TODO: Write usage instructions here
 Thanks moodle for giving code to pwn self:

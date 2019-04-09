@@ -25,10 +25,8 @@ module Toodlemoodle
                         "helper -- Prints a JavaScript to help extract your Moodle Session ID, Session Key, and User ID.\n" \
                         "dashboard_xss -- Inserts a session stealer on to your dashboard for the Admin hijack CVE-2019-3847.\n" \
                         "assignment_xss -- Specially crafted URLs to steal sessions using CVE-2017-2578.\n" \
-                        "admin_jacker -- Generates a web page to clickjack an administrator account using CVE-2019-3847 dashboard_xss exploit.\n" \
                         "sql_injection -- Exploits CVE-2017-2641 to escalate a user's privelege.\n" \
-                        "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n" \
-                        "dorks -- Lists some Google dorks useful for finding targets."
+                        "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n"
         parser.separator("\nArguments:")
         parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|
           @target = str
@@ -68,10 +66,8 @@ module Toodlemoodle
         target_required()
         assignment_xss = AssignmentXSS.new
         assignment_xss.perform(@target)
-      when "admin_jacker"
       when "sql_injection"
       when "rce_shell"
-      when "dorks"
       else
         STDERR.puts "ERROR: Command \"#{@command}\" given does not exist.\n"
         # STDERR.puts @parser

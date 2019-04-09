@@ -67,7 +67,11 @@ module Toodlemoodle
         assignment_xss = AssignmentXSS.new
         assignment_xss.perform(@target)
       when "sql_injection"
+        target_required()
+        sql_injection = SqlInjection.new
+        sql_injection.perform(@target)
       when "rce_shell"
+        # TODO: Riccardo
       else
         STDERR.puts "ERROR: Command \"#{@command}\" given does not exist.\n"
         # STDERR.puts @parser

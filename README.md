@@ -82,12 +82,12 @@ This adds LLVM, LibFFI, and OpenSSL to your compiler flags.
 
 Now you can run this project (this will compile the project, hence the long startup time): 
 ```
-crystal run src/toodlemoodle.cr
+crystal run src/tmoodle.cr
 ```
 
 You can also build an executable:
 ```
-crystal build src/toodlemoodle.cr
+crystal build src/tmoodle.cr
 ```
 Use the  --release flag for an optimized production build.
 

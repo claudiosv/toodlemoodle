@@ -14,9 +14,7 @@ module Toodlemoodle
 
   class Main
     @command = ""
-    @target = "undefined"
-
-    # @parser : OptionParser
+    @target = ""
 
     def main
       OptionParser.parse! do |parser|
@@ -77,12 +75,6 @@ module Toodlemoodle
         # STDERR.puts @parser
         exit(1)
       end
-      # if !@target
-      #   STDERR.puts "ERROR: Please specify a target.\n"
-      #   exit(1)
-      # else
-      #
-      # end
     end
 
     def target_required

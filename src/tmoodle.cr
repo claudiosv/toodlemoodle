@@ -31,6 +31,7 @@ module Toodlemoodle
         parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|
           @target = str
         end
+
         parser.on("-h", "--help", "Show this help message.") { puts parser }
         parser.invalid_option do |flag|
           STDERR.puts "ERROR: #{flag} is not a valid option.\n"

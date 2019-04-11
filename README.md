@@ -100,4 +100,5 @@ Use the  --release flag for an optimized production build.
 
 ## Contributors
 
+- [Riccaardo Felluga](https://github.com/riccardofelluga) - contributor and maintainer
 - [Claudio Spiess](https://github.com/your-github-user) - creator and maintainer

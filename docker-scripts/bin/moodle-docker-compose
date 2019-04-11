@@ -2,6 +2,10 @@
 
 set -e
 
+export MOODLE_DOCKER_WWWROOT=../moodle
+
+export MOODLE_DOCKER_DB=mariadb
+
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then
     echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'

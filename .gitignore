@@ -5,3 +5,4 @@
 *.dwarf
 .DS_Store
 /docker-scripts/moodle
+/docker-scripts/tmp.zip

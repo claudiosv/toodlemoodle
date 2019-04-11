@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+wget -qO- -O ../tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-3.2.1.zip && unzip ../tmp.zip -d ../ && rm ../tmp.zip 
+
+export MOODLE_DOCKER_WWWROOT=../moodle
+
+cp ../config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+
+export MOODLE_DOCKER_DB=mariadb

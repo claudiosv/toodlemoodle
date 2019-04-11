@@ -2,9 +2,22 @@
 
 set -e
 
-export MOODLE_DOCKER_WWWROOT=../moodle
+export MOODLE_DOCKER_WWWROOT=./moodle
 
 export MOODLE_DOCKER_DB=mariadb
+
+if [ ! -d "$MOODLE_DOCKER_WWWROOT" ] && [ ! -f "./tmp.zip" ];
+then
+    wget -O- -O ./tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-3.2.zip 
+fi
+
+if [ -f "./tmp.zip" ];
+then
+    unzip ./tmp.zip -d ./
+    rm ./tmp.zip
+fi
+
+cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then

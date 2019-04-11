@@ -90,6 +90,10 @@ crystal build src/tmoodle.cr
 ```
 Use the  --release flag for an optimized production build.
 
+### Docker image setup
+
+
+
 ## Contributing
 
 1. Fork it (<https://github.com/your-github-user/toodlemoodle/fork>)

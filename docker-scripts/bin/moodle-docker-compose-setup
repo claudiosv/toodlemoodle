@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
-wget -O- -O ../tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-3.2.1.zip && unzip ../tmp.zip -d ../ && rm ../tmp.zip 
+set -e 
 
-cp ../config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+export MOODLE_FOLDER=../moodle
+
+export TMP_ZIP=../tmp.zip
+
+if [ -d "$MOODLE_FOLDER" ];
+then
+    rm -rf $MOODLE_FOLDER
+fi
+
+if [ -f "$TMP_ZIP" ];
+then
+    rm $TMP_ZIP
+fi
+
+wget -O- -O ../tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-3.2.zip && unzip ../tmp.zip -d ../ && rm ../tmp.zip 
+
+cp ../config.docker-template.php $MOODLE_FOLDER/config.php

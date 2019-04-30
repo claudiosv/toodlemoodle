@@ -53,6 +53,8 @@ fresher:
 
 https://www.cvedetails.com/cve/CVE-2018-14630/ 3.5.2 remote code exec for (teacher?) "quiz import" probably wont be done
 
+https://packetstormsecurity.com/files/149426/Moodle-3.x-PHP-Unserialize-Remote-Code-Execution.html CVE-2018-14630
+
 Features:
 1. scan: detect version (working!), suggest supported exploits
 2. view calendar events bypass

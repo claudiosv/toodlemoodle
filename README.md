@@ -1,6 +1,6 @@
 # ToodleMoodle
 
-![ToodleMoodle](./ReadMeMoodleImage.png)
+![ToodleMoodle](./images/ReadMeMoodleImage.png?raw=true)
 
 ## Installation
 

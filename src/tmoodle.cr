@@ -71,7 +71,8 @@ module Toodlemoodle
         sql_injection = SqlInjection.new
         sql_injection.perform(@target)
       when "rce_shell"
-        # TODO: Riccardo
+        rce_exploit = RCEExploit.new
+        rce_exploit.perform(@target)
       when "listen"
         # Starts a tiny HTTP server that listens for session keys and cookies.
         # Always returns a transparent 1x1 image.

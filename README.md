@@ -1,6 +1,6 @@
 # ToodleMoodle
 
-TODO: Write a description here
+![ToodleMoodle](./images/ReadMeMoodleImage.png?raw=true)
 
 ## Installation
 

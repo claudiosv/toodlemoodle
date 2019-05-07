@@ -1,0 +1,32 @@
+version: "2"
+services:
+  webserver:
+    image: "moodlehq/moodle-php-apache:${MOODLE_DOCKER_PHP_VERSION}"
+    depends_on:
+      - db
+    volumes:
+      - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
+      - "${ASSETDIR}/web/apache2_faildumps.conf:/etc/apache2/conf-enabled/apache2_faildumps.conf"
+    environment:
+      MOODLE_DOCKER_DBTYPE: mariadb
+      MOODLE_DOCKER_DBNAME: moodle
+      MOODLE_DOCKER_DBUSER: moodle
+      MOODLE_DOCKER_DBPASS: "m@0dl3ing"
+      MOODLE_DOCKER_WEB_HOST: "${MOODLE_DOCKER_WEB_HOST}"
+      MOODLE_DOCKER_DBCOLLATION: utf8_bin
+      MOODLE_DOCKER_WEB_PORT: "${MOODLE_DOCKER_WEB_PORT}"
+    ports:
+      - "${MOODLE_DOCKER_WEB_PORT}:80"
+  db:
+    image: mariadb:10.2
+    command: >
+              --character-set-server=utf8
+              --collation-server=utf8_bin
+              --innodb_file_format=barracuda
+              --innodb_file_per_table=On
+              --innodb_large_prefix=On
+    environment:
+      MYSQL_ROOT_PASSWORD: "m@0dl3ing"
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: "m@0dl3ing"
+      MYSQL_DATABASE: moodle

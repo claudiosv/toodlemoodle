@@ -26,6 +26,7 @@ module Toodlemoodle
                         "assignment_xss -- Specially crafted URLs to steal sessions using CVE-2017-2578.\n" \
                         "sql_injection -- Exploits CVE-2017-2641 to escalate a user's privelege.\n" \
                         "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n" \
+                        "session -- Retrives the session information.\n" \
                         "listen -- Listen for cookies\n"
         parser.separator("\nArguments:")
         parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|
@@ -73,6 +74,9 @@ module Toodlemoodle
       when "rce_shell"
         rce_exploit = RCEExploit.new
         rce_exploit.perform(@target)
+      when "session"
+        session_info = SessionInfo.new
+        session_info.perform(@target)
       when "listen"
         # Starts a tiny HTTP server that listens for session keys and cookies.
         # Always returns a transparent 1x1 image.

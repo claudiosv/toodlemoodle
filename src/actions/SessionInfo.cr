@@ -33,6 +33,7 @@ class SessionInfo
       if response.status_code == 303
         puts "[!] Login failed!"
       else
+        puts "[*] Login success!"
         session_key = /sesskey\":\"(.*)\",\"loadingicon/.match(response.body).try &.[1]
         puts "[>] Authenticated session ID => " + moodle_session.not_nil!
         puts "[>] Authenticated session key => " + session_key.not_nil!

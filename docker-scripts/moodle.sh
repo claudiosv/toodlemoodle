@@ -36,7 +36,7 @@ function clean() {
 function build() {
 	echo "[+] Downloading Moodle VERSION $MOODLE_VERSION"
 	clean
-	wget -O- -O ./tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-$MOODLE_VERSION.zip
+	wget -O- -O ./tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable31/moodle-$MOODLE_VERSION.zip
 	if [! -f "./tmp.zip" ]; then
 		echo "Problems downloading the moodle"
 	fi

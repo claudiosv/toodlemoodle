@@ -2,7 +2,7 @@
 set -e
 #some vars
 export MOODLE_DOCKER_WWWROOT=./moodle
-export MOODLE_VERSION=3.1.13
+export MOODLE_VERSION=3.2
 export MOODLE_DOCKER_DB=mariadb
 export MOODLE_DOCKER_PHP_VERSION=7.1
 export MOODLE_DOCKER_WEB_HOST=localhost
@@ -36,7 +36,7 @@ function clean() {
 function build() {
 	echo "[+] Downloading Moodle VERSION $MOODLE_VERSION"
 	clean
-	wget -O- -O ./tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable31/moodle-$MOODLE_VERSION.zip
+	wget -O- -O ./tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-$MOODLE_VERSION.zip
 	if [! -f "./tmp.zip" ]; then
 		echo "Problems downloading the moodle"
 	fi

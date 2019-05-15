@@ -32,6 +32,7 @@ class SessionInfo
       response = http_get(url + "/my/", moodle_session)
       if response.status_code == 303
         puts "[!] Login failed!"
+        exit 1
       else
         puts "[*] Login success!"
         session_key = /sesskey\":\"(.*)\",\"loadingicon/.match(response.body).try &.[1]

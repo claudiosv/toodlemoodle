@@ -74,6 +74,9 @@ module Toodlemoodle
       when "rce_shell"
         rce_exploit = RCEExploit.new
         rce_exploit.perform(@target)
+      when "string_length"
+        string = gets().not_nil!
+        puts(string.bytesize)
       when "session"
         session_info = SessionInfo.new
         session_info.perform(@target)

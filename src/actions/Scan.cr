@@ -20,13 +20,6 @@ module TMoodleActions
 
     def vulnerabilities(version)
       regex = /^(\d+\.)?(\d+\.)?(\*|\d+)$/
-      #   captures = version.match(regex).not_nil!.captures
-      #   major = captures.delete('.').not_nil!.to_i
-      #   minor = captures.delete('.').not_nil!.to_i
-      #   fix = captures.delete('.').not_nil!.to_i
-      #   if major <= 3 && minor <= 6
-      #     puts "Vulnerable to CVE-2019-3847"
-      #   end
     end
   end
 end

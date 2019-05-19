@@ -34,8 +34,8 @@ function clean() {
 	docker-compose -f base-moodle.yml rm webserver db
 }
 function build() {
-	echo "[+] Downloading Moodle VERSION $MOODLE_VERSION"
 	clean
+	echo "[+] Downloading Moodle VERSION $MOODLE_VERSION"
 	wget -O- -O ./tmp.zip https://downloads.sourceforge.net/project/moodle/Moodle/stable32/moodle-$MOODLE_VERSION.zip
 	if [! -f "./tmp.zip" ]; then
 		echo "Problems downloading the moodle"

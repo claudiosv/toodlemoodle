@@ -13,7 +13,7 @@ class SessionInfo
     session = get_session(target, username, psw)
     puts "[*] Session token: " + session["moodle_session"]
     puts "[*] Session key: " + session["session_key"]
-    puts "[!] Done, session retrived!"
+    puts "[!] Done, session retrieved!"
   end
 
   def get_session(url, user, psw)

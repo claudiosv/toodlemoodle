@@ -54,12 +54,11 @@ https://packetstormsecurity.com/files/149426/Moodle-3.x-PHP-Unserialize-Remote-C
 
 Features:
 
-* Scan: the tool can detect version and suggest supported exploits
+* Scan: the tool can detect version
 * Exploit RCE 2018-1133 and CVE-2018-14630
-* Exploit 2017-2641 SQL injection (via user pref) (generate sqlmap command)
-* Add XSS to account dashboard, generate clickjacker, using CVE-2019-3847 to hijack
+* Exploit 2017-2641 SQL injection (via user pref)
+* Add XSS to account dashboard, use clickjacker, using CVE-2019-3847 to hijack
 session
-* Add XSS to calendar, generate link for victim to click and steal session
 
 ## Development
 

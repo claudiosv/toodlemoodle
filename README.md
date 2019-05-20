@@ -81,11 +81,16 @@ Now you can run this project (this will compile the project, hence the long star
 ```
 crystal run src/tmoodle.cr
 ```
+or
+```
+crystal build src/tmoodle.cr && ./tmoodle
+```
 
 You can also build an executable:
 ```
 crystal build src/tmoodle.cr
 ```
+
 Use the  --release flag for an optimized production build.
 
 ### Docker image setup

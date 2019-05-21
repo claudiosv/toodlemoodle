@@ -80,6 +80,15 @@ module Toodlemoodle
         when "session"
           session_info = SessionInfo.new
           session_info.perform(@target)
+        when "clickjack"
+          server = HTTP::Server.new([
+            HTTP::ErrorHandler.new,
+            HTTP::CompressHandler.new,
+            HTTP::StaticFileHandler.new("clickjack"),
+          ])
+
+          server.bind_tcp "0.0.0.0", 80
+          server.listen
         when "listen"
           # Starts a tiny HTTP server that listens for session keys and cookies.
           # Always returns a transparent 1x1 image.

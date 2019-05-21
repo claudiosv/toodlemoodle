@@ -76,7 +76,7 @@ module Toodlemoodle
           rce_exploit.perform(@target)
         when "string_length"
           string = gets().not_nil!
-          puts(string.bytesize)
+          puts string.bytesize
         when "session"
           session_info = SessionInfo.new
           session_info.perform(@target)

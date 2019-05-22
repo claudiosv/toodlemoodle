@@ -22,11 +22,9 @@ module Toodlemoodle
         OptionParser.parse! do |parser|
           parser.banner = "Usage: tmoodle command [arguments]\n" \
                           "Commands:\nscan -- Scans the target, revealing the version.\n" \
-                          "helper -- Extracts your Moodle Session ID and Session Key.\n" \
                           "dashboard_xss -- Inserts a session stealer on to your dashboard for the Admin hijack CVE-2019-3847.\n" \
                           "assignment_xss -- Specially crafted URLs to steal sessions using CVE-2017-2578.\n" \
                           "sql_injection -- Exploits CVE-2017-2641 to escalate a user's privelege. \n" \
-                          "string_length -- Simply gives you the length of an entered string, useful for constructing serialized payloads.\n" \
                           "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n" \
                           "listen -- Listen for cookies\n"
           parser.separator("\nArguments:")
@@ -56,9 +54,6 @@ module Toodlemoodle
           target_required()
           scanner = Scanner.new
           scanner.perform(@target)
-        when "helper"
-          session_info = SessionInfo.new
-          session_info.perform(@target)
         when "dashboard_xss"
           target_required()
           dashboard_xss = DashboardXSS.new
@@ -74,12 +69,6 @@ module Toodlemoodle
         when "rce_shell"
           rce_exploit = RCEExploit.new
           rce_exploit.perform(@target)
-        when "string_length"
-          string = gets().not_nil!
-          puts string.bytesize
-        when "session"
-          session_info = SessionInfo.new
-          session_info.perform(@target)
         when "clickjack"
           puts "[*] Listening..."
           server = HTTP::Server.new([

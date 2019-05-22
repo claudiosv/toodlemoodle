@@ -81,6 +81,7 @@ module Toodlemoodle
           session_info = SessionInfo.new
           session_info.perform(@target)
         when "clickjack"
+          puts "[*] Listening..."
           server = HTTP::Server.new([
             HTTP::ErrorHandler.new,
             HTTP::CompressHandler.new,

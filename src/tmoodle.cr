@@ -19,6 +19,14 @@ module Toodlemoodle
 
     def main
       begin
+        puts <<-STRING
+        ████████╗███╗   ███╗ ██████╗  ██████╗ ██████╗ ██╗     ███████╗
+        ╚══██╔══╝████╗ ████║██╔═══██╗██╔═══██╗██╔══██╗██║     ██╔════╝
+           ██║   ██╔████╔██║██║   ██║██║   ██║██║  ██║██║     █████╗
+           ██║   ██║╚██╔╝██║██║   ██║██║   ██║██║  ██║██║     ██╔══╝
+           ██║   ██║ ╚═╝ ██║╚██████╔╝╚██████╔╝██████╔╝███████╗███████╗
+           ╚═╝   ╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚══════╝
+        STRING
         OptionParser.parse! do |parser|
           parser.banner = "Usage: tmoodle command [arguments]\n" \
                           "Commands:\nscan -- Scans the target, revealing the version.\n" \

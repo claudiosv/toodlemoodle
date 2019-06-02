@@ -62,7 +62,6 @@ session
 
 ## Development
 
-TODO: Write development instructions here
 Make sure you have crystal & openssl installed. For MacOs, run
 ```
 brew install crystal openssl

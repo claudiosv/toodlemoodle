@@ -34,7 +34,11 @@ module Toodlemoodle
                           "assignment_xss -- Specially crafted URLs to steal sessions using CVE-2017-2578.\n" \
                           "sql_injection -- Exploits CVE-2017-2641 to escalate a user's privelege. \n" \
                           "rce_shell -- Exploits CVE-2018-1133 (must be a teacher) to launch a reverse shell.\n" \
+<<<<<<< HEAD
                           "clickjack -- Serve clickjacker on port 80 (must run as root).\n" \
+=======
+                          "clickjack -- starts the clickjacker server\n"\
+>>>>>>> 24ef0411b652647a9cd6910fe74b49044ae679b4
                           "listen -- Listen for cookies\n"
           parser.separator("\nArguments:")
           parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|

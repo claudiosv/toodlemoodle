@@ -37,7 +37,7 @@ module Toodlemoodle
                           "clickjack -- Serve clickjacker on port 80 (must run as root).\n" \
                           "listen -- Listen for cookies\n"
           parser.separator("\nArguments:")
-          parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack. Do not include a slash at the end! Example: https://ole.unibz.it ") do |str|
+          parser.on("-t TARGET", "--target=TARGET", "Moodle target to attack and its port. Do not include a slash at the end! Example: https://ole.unibz.it:80 ") do |str|
             @target = str
           end
 

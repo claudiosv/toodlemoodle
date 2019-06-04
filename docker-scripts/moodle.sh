@@ -5,8 +5,10 @@ export MOODLE_DOCKER_WWWROOT=./moodle
 export MOODLE_VERSION=3.2
 export MOODLE_DOCKER_DB=mariadb
 export MOODLE_DOCKER_PHP_VERSION=7.1
-export MOODLE_DOCKER_WEB_HOST=localhost
-export MOODLE_DOCKER_WEB_PORT=8000
+export MOODLE_DOCKER_WEB_HOST=2f80a06c.ngrok.io
+#localhost
+#ac8c4419.ngrok.io
+export MOODLE_DOCKER_WEB_PORT=80
 export ASSETDIR=./assets
 
 function all() {
